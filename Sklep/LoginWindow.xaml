@@ -1,0 +1,58 @@
+﻿<Window x:Class="Sklep.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sklep"
+        mc:Ignorable="d"
+        KeyDown="IsPressedEnter"
+       Title="LoginWindow" Height="450" Width="750" FontSize="18">
+    <Window.Resources>
+        <ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
+            <Border BorderBrush="BurlyWood" Height="50" BorderThickness="1" CornerRadius="7 7 7 7"  Background="#ce394f" TextBlock.Foreground="White" >
+                <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="buttonTemplate2" TargetType="{x:Type Button}">
+            <Border BorderBrush="BurlyWood" Height="50" BorderThickness="1" CornerRadius="7 7 7 7"  Background="White" TextBlock.Foreground="#ce394f" >
+                <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
+        
+    </Window.Resources>
+    
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label  Margin="5" Padding="10" FontWeight="Bold" FontSize="28">Logowanie</Label>
+            <Label  Grid.Row="1" Margin="3" >Email:</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="3" Name="login" >mateusz.matyczak@wp.pl</TextBox>
+            <Label Grid.Row="2" Margin="3">Hasło:</Label>
+            <PasswordBox Grid.Row="2" Grid.Column="1" Margin="3" Name="password" PasswordChar="*"/>
+
+
+            <Button Padding="20,10,20,10" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"  
+                    Click="OpenClientWindow" FontWeight="Bold" Template="{StaticResource buttonTemplate}" Margin="5" Content="Zaloguj"/>
+            <TextBlock Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Foreground="Red" Name="warning"></TextBlock>
+            <Label  Grid.Row="5" Margin="15,30,10,0" Padding="10" >Nie masz jeszcze konta?</Label>
+            <Button Padding="15,10,15,10" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"  
+                    ToolTip="Zostań naszym nowym klientem! "
+                   Click="OpenSignUpWindow" FontWeight="Bold" Template="{StaticResource buttonTemplate2}" Margin="5" Content="Zarejestruj się"/>
+
+        </Grid>
+
+    </Grid>
+</Window>

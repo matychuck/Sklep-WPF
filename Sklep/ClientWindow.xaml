@@ -1,0 +1,191 @@
+﻿<Window x:Class="Sklep.ClientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sklep" Language="pl-PL"
+        mc:Ignorable="d"
+        Title="Client Window" Height="600" Width="1300" MinHeight="450" MinWidth="750" WindowState="Maximized" Closing="Window_Closing">
+    <Window.Resources>
+        <local:ImagePathConverter x:Key="ImagePathConverter"/>
+        <local:PriceConverter x:Key="PriceConverter"/>
+        <local:RadioButtonConverter x:Key="RadioButtonConverter"/>
+        <ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}" >
+            <Border BorderBrush="BurlyWood" Height="25" BorderThickness="1" CornerRadius="7 7 7 7"  Background="#ce394f" TextBlock.Foreground="White" >
+                <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="buttonTemplate2" TargetType="{x:Type Button}">
+            <Border BorderBrush="BurlyWood" Height="50" BorderThickness="1" CornerRadius="7 7 7 7"  Background="White" TextBlock.Foreground="#ce394f" >
+                <ContentPresenter RecognizesAccessKey="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
+        <DataTemplate x:Key="ProductDataTemplate">
+            <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+                <Grid Margin="3" MaxWidth="240">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Margin="0,0,5,0" Name="ProductImage" Grid.ColumnSpan="2" MaxHeight="200" MaxWidth="200" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Source="{Binding Path=ImagePath, Converter={StaticResource ImagePathConverter}}"/>
+                    <TextBlock Grid.Row="1" Margin="1,10" TextWrapping="Wrap" FontWeight="Bold" Text="{Binding Path=Name}"/>
+                    <TextBlock Margin="1,10" Grid.Column="1" Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Right"  Text="{Binding Path=Price, ValidatesOnDataErrors=True, Converter={StaticResource PriceConverter}}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="GroupTemplate">
+            <TextBlock Text="{Binding Path=Name}"
+                        FontWeight="Bold" Foreground="White" Background="DarkRed"
+                        Margin="0,5,0,0" Padding="3"/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Click="OpenBasket" ToolTip="Sprawdź co znajduje się w twoim koszyku!" Margin="5" Width="250"  Grid.Column="0" FontWeight="Bold" HorizontalAlignment="Center"
+                        Template="{StaticResource buttonTemplate2}">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Koszyk" Foreground="#ce394f"/>
+                        <Image Source="images/kosz.png"  Width="30" Height="30" HorizontalAlignment="Left" Margin="5 0 0 0"/>
+                    </StackPanel>
+
+                </Button>
+                <Button Content="Moje Konto" ToolTip="Sprawdź swoje dane i historie zamówień" Click="ShowClientAccount" Margin="5" Grid.Column="1" Width="250" HorizontalAlignment="Right" Template="{StaticResource buttonTemplate}" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Grupowanie" VerticalAlignment="Center" Margin="5" />
+                
+                <ComboBox Name="grouping" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="110,10,5,5" >
+                    <ComboBoxItem Selected="GroupNone">Bez grupowania</ComboBoxItem>
+                    <ComboBoxItem Selected="GroupPrice">Grupuj wg ceny</ComboBoxItem>
+                </ComboBox>
+
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="0" Grid.RowSpan="2">
+                    <Button ToolTip="Przefiltruj produkty według filtrów" Content="Filtruj" Click="Filter" Margin="5" Template="{StaticResource buttonTemplate}"/>
+                    <Button Content="Usuń filtr" Click="FilterNone" Margin="5" Template="{StaticResource buttonTemplate}"/>
+                </StackPanel>
+
+                <GroupBox Grid.Column="1" Grid.RowSpan="3" Header="Filtrowanie" VerticalAlignment="Top" Margin="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Target="{Binding ElementName=priceForFilter}" Content="_Cena" Margin="5"/>
+                        <Slider Name="sliderPrice" IsSnapToTickEnabled="True" Minimum="0" Maximum="200" TickPlacement="TopLeft" Value="0" TickFrequency="2" Grid.Column="1" Margin="5"/>
+                        <DockPanel Grid.Row="1" Grid.Column="1">
+                            <TextBox Name="priceForFilter" Padding ="3" Margin="3" VerticalAlignment="Center"
+                                 Text="{Binding ElementName=sliderPrice, Path=Value}" />
+                        </DockPanel>
+                        <!--<TextBlock Text="0" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Right"/>-->
+                        <Label Content="Płeć" Grid.Row="2" Margin="5" />
+                        <Grid Grid.Column="1" Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <RadioButton Content="Kobieta" Name="woman" IsChecked="{Binding Path=Sex, Converter={StaticResource RadioButtonConverter}, ConverterParameter=0}" Grid.Column="0" Margin="0 10" />
+                            <RadioButton Content="Mężczyzna" Name="man" IsChecked="{Binding Path=Sex, Converter={StaticResource RadioButtonConverter}, ConverterParameter=1}" Grid.Column="1" Margin="5 10" />
+                        </Grid>
+                        <!--<Label Target="{Binding ElementName=txtSize}" Content="_Rozmiar" Grid.Row="3" Margin="5"/>
+                        <TextBox Name="txtSize" Grid.Column="1" Grid.Row="3" Margin="5"/>-->
+                    </Grid>
+                </GroupBox>
+
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Sortowanie" VerticalAlignment="Top" Margin="5"/>
+                <ComboBox Grid.ColumnSpan="2" Name="cbxSorting" VerticalAlignment="Top"  Margin="110,5,5,0">
+                    <!--NIE DODAWAC SelectedIndex=0 BO JEBNIE-->
+                    <!--Dodałem, ma racje jebło-->
+                    <ComboBoxItem Selected="SortNone">Bez sortowania</ComboBoxItem>
+                    <ComboBoxItem Selected="SortName">Sortuj wg nazwy</ComboBoxItem>
+                    <ComboBoxItem Selected="SortPrice">Sortuj wg ceny</ComboBoxItem>
+                </ComboBox>
+                
+                <Image Source="elephant.jpg" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="300" Width="300" VerticalAlignment="Center"/>
+            </Grid>
+            
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Label Target="{Binding ElementName=txtSearching}" Margin="5" VerticalAlignment="Center" >_Wyszukiwanie</Label>
+            <TextBox Name="txtSearching" Grid.Column="1" Margin="5" VerticalAlignment="Center" Text = "{Binding Path=SearchText,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Szukaj" Margin="5" Grid.Column="2"  Click="Search"   Template="{StaticResource buttonTemplate}" />
+            <Button Click="BackToMainWindow" Grid.Column="3" Margin="5" Content="Wyloguj" Template="{StaticResource buttonTemplate}"/>
+            <Label Content="Lista produktów" Grid.Row="1" Grid.ColumnSpan="4"  HorizontalAlignment="Center"/>
+
+            <ListBox Name="listOfProducts" Grid.Row="1" Grid.ColumnSpan="4"
+                     Margin="5,0,5,36" MouseDoubleClick="ProductSelected" ItemsSource="{Binding MyFilteredItems}"
+                     ItemTemplate="{StaticResource ProductDataTemplate}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                     ScrollViewer.CanContentScroll="False" Grid.RowSpan="2" >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid  HorizontalAlignment="Stretch" Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.GroupStyle>
+                    <GroupStyle HeaderTemplate="{StaticResource GroupTemplate}"/>
+                </ListBox.GroupStyle>
+            </ListBox>
+
+        </Grid>
+    </Grid>
+</Window>

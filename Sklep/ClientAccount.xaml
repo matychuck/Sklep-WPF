@@ -1,0 +1,89 @@
+﻿<Window x:Class="Sklep.ClientAccount"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sklep"
+        mc:Ignorable="d"
+        Title="ClientAccount"  Height="350" Width="600" >
+    <Window.Resources>
+        <local:ImagePathConverter x:Key="ImagePathConverter"/>
+        <local:PriceConverter x:Key="PriceConverter"/>
+        <DataTemplate x:Key="ProductDataTemplate">
+            <Border Margin="5" BorderThickness="1"  BorderBrush="SteelBlue" CornerRadius="4">
+                <Grid Margin="3" MaxWidth="240">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+
+                    </Grid.RowDefinitions >
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="images/iconpng.png" Width="100" Height="100" Margin="0 0 5 0"/>
+                    <TextBlock Margin="3" Text="Ilość: " Grid.Column="1"/>
+                    <TextBlock Grid.Column="2" Margin="3" TextWrapping="Wrap" FontWeight="Bold" Text="{Binding Path=Amount}"/>
+
+                    <TextBlock  Margin="3" Grid.Column="3"  FontWeight="Bold"   Text="{Binding Path=Status}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Margin="3" Grid.IsSharedSizeScope="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <ToolBar Grid.ColumnSpan="3" Margin="0,0,0,0.4">
+            <Label FontWeight="Bold">Moja historia zamówień</Label>
+            <Label>Łaczna liczba pozycji</Label>
+            <TextBox MinWidth="50" Name="productCounter" IsEnabled="False"/>
+   
+        </ToolBar>
+        <ListBox Grid.Row="1" Name="ordersList" HorizontalContentAlignment="Stretch"             
+                 ScrollViewer.CanContentScroll="False" ItemTemplate="{StaticResource ProductDataTemplate}">
+        </ListBox>
+        <GridSplitter Grid.Row="1" Grid.Column="1" Width="5" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="1" Grid.Column="2">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label  Margin="3">Moje dane</Label>
+            <Label  Grid.Row="1" Margin="3" >Imie:</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="3" Name="clientName"  IsEnabled="False"/>
+            <Label Grid.Row="2" Margin="3" >Nazwisko:</Label>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="3" Name="clientSurname"  IsEnabled="False"/>
+            <Label Grid.Row="3" Margin="3" >Email:</Label>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="3" Name="clientEmail" IsEnabled="False"/>
+            <Label Grid.Row="4"  Margin="3" >Adres:</Label>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="3" Name="clientAddress" IsEnabled="False"/>
+            <Label Grid.Row="5"  Margin="3" >Hasło:</Label>
+            <TextBox Grid.Row="5" Grid.Column="1" Margin="3" Name="clientPassword" IsEnabled="False"/>
+            <Button Grid.Row="6" Margin="10" Padding="15,5" Name="viewButton"
+                    Foreground="Black" BorderBrush="Black" Background="#b3e6ff" Click="viewButton_Click">Podgląd</Button>
+            <Button Grid.Row="6" Grid.Column="1" Margin="10" Padding="5" Background="LightGoldenrodYellow" Name="comeBackButton"
+                    Foreground="Black" BorderBrush="Black" Click="comeBackButton_Click">Wróć do sklepu</Button>
+        </Grid>
+
+    </Grid>
+</Window>

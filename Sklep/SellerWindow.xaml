@@ -1,0 +1,198 @@
+﻿<Window x:Class="Sklep.SellerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sklep"
+        mc:Ignorable="d"
+        Title="SellerWindow" Height="450" Width="750" Closing="Window_Closing"  Loaded="Window_Loaded">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:RemoveCommands.Remove" Executed="DeleteClient" CanExecute="CanDeleteClient"/>
+        <CommandBinding Command="local:RemoveCommands.Remove" Executed="DeleteProduct" CanExecute="CanDeleteProduct"/>
+        <CommandBinding Command="local:RemoveCommands.Remove" Executed="DeleteOrder" CanExecute="CanDeleteOrder"/>
+    </Window.CommandBindings>
+    <TabControl >
+        <TabItem Width="240" Padding="5" Header="Lista klientów">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="308*"/>
+                    <ColumnDefinition Width="77*"/>
+                    <ColumnDefinition Width="353*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <ToolBar Grid.ColumnSpan="3" Margin="0,0,0.333,0.667">
+                    <Button Click="DeleteClient" Command="local:RemoveCommands.Remove">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label  Padding="5" FontWeight="Bold" >Usuń klienta</Label>
+                            <Image Grid.Column="1" Source="delete_client.png" Stretch="None" Height="43" Width="59" />
+                        </Grid>
+                    </Button>
+
+
+
+                    <Separator></Separator>
+
+                </ToolBar>
+
+                <ListView Name="clientList" HorizontalContentAlignment="Stretch"                        
+                         ScrollViewer.CanContentScroll="True" Grid.ColumnSpan="3" Margin="0,6.333,0.333,0" Grid.Row="1">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Width="180" Header="Imie" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Width="180" Header="Nazwisko" DisplayMemberBinding="{Binding Surname}"/>
+                                <GridViewColumn Width="200" Header="Email"  DisplayMemberBinding="{Binding Email}"/>
+                                <GridViewColumn Width="200" Header="Adres" DisplayMemberBinding="{Binding Address}"/>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </TabItem>
+
+        <TabItem Width="245" Padding="5" Header="Stan Magazynu" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <ToolBar>
+
+                    <ComboBox SelectedIndex="0">
+                        <ComboBoxItem Selected="SortNone" >Bez sortowania</ComboBoxItem>
+                        <ComboBoxItem  Name="SortNameCbI"  Selected="SortName">Sortuj wg nazwy</ComboBoxItem>
+                    </ComboBox>
+                    <Separator></Separator>
+                    <Button Click="AddProduct" FontWeight="Bold" Padding="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label  Padding="5" FontWeight="Bold" >Dodaj</Label>
+                            <Image Grid.Column="1" Source="add.png" Stretch="None" Width="59" Margin="1.667,-4,-2,-2.333" />
+                        </Grid>
+
+                    </Button>
+                    <Separator></Separator>
+                    <Button Click="DeleteProduct" FontWeight="Bold" Padding="5" Command="local:RemoveCommands.Remove">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="42.667"/>
+                            </Grid.RowDefinitions>
+                            <Label  Padding="5" FontWeight="Bold" >Usuń</Label>
+                            <Image Grid.Column="1" Source="usun_sign.png" Stretch="None" Height="43" Width="59" />
+                        </Grid>
+                    </Button>
+                    <Separator></Separator>
+                    <Button Click="EditProduct" FontWeight="Bold" Padding="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label  Padding="5" FontWeight="Bold" >Edytuj</Label>
+                            <Image Grid.Column="1" Source="modify.png" Stretch="None" Height="43" Width="59" />
+                        </Grid>
+                    </Button>
+                </ToolBar>
+
+                <ListView Grid.Row="1" Name="productList"               
+                           Height="350" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False" 
+                           Grid.ColumnSpan="5" Margin="0,0,0,0.4" Grid.RowSpan="2">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Width="240" Header="Nazwa" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Width="150" Header="NumerSeryjny" DisplayMemberBinding="{Binding SerialNumber}"/>
+                                <GridViewColumn Width="70" Header="Ilosc" DisplayMemberBinding="{Binding Amount}"/>
+                                <GridViewColumn Width="170" Header="Cena" DisplayMemberBinding="{Binding Price}"/>
+                                <GridViewColumn Width="70" Header="Plec" DisplayMemberBinding="{Binding Sex}"/>
+
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </TabItem>
+
+        <TabItem Width="245" Padding="5" Header="Realizacja zamówień" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <ToolBar>
+                    <Separator></Separator>
+                    <Button  Click="DeleteOrder" FontWeight="Bold" Padding="5" Command="local:RemoveCommands.Remove">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="42.667"/>
+                            </Grid.RowDefinitions>
+                            <Label  Padding="5" FontWeight="Bold" >Usuń</Label>
+                            <Image Grid.Column="1" Source="usun_sign.png" Stretch="None" Height="43" Width="59" />
+                        </Grid>
+
+                    </Button>
+                    <Separator></Separator>
+                    <Button Click="SendOrder" FontWeight="Bold" Padding="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="42.667"/>
+                            </Grid.RowDefinitions>
+                            <Label  Padding="5" FontWeight="Bold" >Wyślij</Label>
+                            <Image Grid.Column="1" Source="send_sign.png" Stretch="None" Height="43" Margin="0,0,-22.333,-0.333" />
+                        </Grid>
+
+                    </Button>
+                </ToolBar>
+
+                <ListView Grid.Row="1" Name="orderList" HorizontalContentAlignment="Stretch"                         
+                         ScrollViewer.CanContentScroll="False" Grid.ColumnSpan="5" Margin="0,0,0,0.4" Grid.RowSpan="2">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Width="250" Header="emailKlienta" DisplayMemberBinding="{Binding Email}"/>
+                                <GridViewColumn Width="50" Header="Ilosc "  DisplayMemberBinding="{Binding Amount}"/>
+                                <GridViewColumn Width="250" Header="Stan Zamówienia"  DisplayMemberBinding="{Binding Status}"/>
+                                <GridViewColumn Width="250" Header="Plik Zamówienia"  DisplayMemberBinding="{Binding OrdersFile}"/>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </TabItem>
+
+
+
+
+    </TabControl>
+</Window>
